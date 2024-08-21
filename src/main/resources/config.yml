@@ -1,0 +1,55 @@
+# Made by XiaoJibaZhanshi
+# You can add more levels, but not upgrades!
+
+# The way the NPC is going to work is that it'll stand still and "collect" the crop you've farmed
+# At the end of the npc-lifetime-seconds you'll be able to click the NPC and get the rewards
+# If you leave him hanging or leave the server during that time, you lose those rewards (he despawns after 5 min)
+
+upgrades:
+  player-speed:
+    levels:
+      1:
+        chance-to-trigger: 1.0 # this is in percent
+        cost: 0 # has to be a full integer
+        potion-amplifier: 0 # lowest potion amplifier, this has to be a full integer (no decimals)
+  looting:
+    levels:
+      1:
+        chance-to-trigger: 1.0
+        cost: 0
+        crop-multiplier: 2 # if left on 2 - will give 2 crops instead of 1 when farming
+  auto-replant:
+    levels:
+      1:
+        chance-to-trigger: 1.0
+        cost: 0
+  meteor:
+    levels:
+      1:
+        chance-to-trigger: 1.0
+        cost: 0
+        radius: 3
+  npc:
+    levels:
+      1:
+        chance-to-trigger: 0.1
+        cost: 0
+        npc-lifetime-seconds: 30 # the npc retrieves 1 of whatever crop you farmed per second by the way
+
+main-gui:
+  name: "&7Upgrades"
+  rows: 3
+  slots:
+    11: player-speed
+    12: looting
+    13: auto-replant
+    14: meteor
+    15: npc
+
+upgrade-guis:
+  rows: 3
+  hide-far-levels: true # this will simply make it so that if a level is 2 higher than the player's,
+                        # it will make it into a barrier block named "Unlock previous level first"
+  fill-gui:
+    enabled: true
+    material: gray_stained_glass_pane
