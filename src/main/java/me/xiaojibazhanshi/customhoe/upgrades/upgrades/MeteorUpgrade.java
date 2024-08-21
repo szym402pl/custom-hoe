@@ -8,19 +8,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.List;
 import java.util.TreeSet;
 
-public class MeteorUpgrade implements Upgrade {
-    @Override
-    public List<Level> getLevels() {
-        return null;
+public class MeteorUpgrade extends Upgrade {
+
+    public MeteorUpgrade(List<Level> levels, String name) {
+        super(levels, name);
     }
 
     @Override
-    public String getName() {
-        return "Meteor Upgrade";
-    }
-
-    @Override
-    public void onCropBreak(BlockBreakEvent event, Player player) {
+    protected void onCropBreak(BlockBreakEvent event, Player player) {
 
     }
 }

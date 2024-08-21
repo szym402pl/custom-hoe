@@ -8,19 +8,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.List;
 import java.util.TreeSet;
 
-public class LootingUpgrade implements Upgrade {
-    @Override
-    public List<Level> getLevels() {
-        return null;
+public class LootingUpgrade extends Upgrade {
+
+    public LootingUpgrade(List<Level> levels, String name) {
+        super(levels, name);
     }
 
     @Override
-    public String getName() {
-        return "Looting Upgrade";
-    }
-
-    @Override
-    public void onCropBreak(BlockBreakEvent event, Player player) {
+    protected void onCropBreak(BlockBreakEvent event, Player player) {
 
     }
 }

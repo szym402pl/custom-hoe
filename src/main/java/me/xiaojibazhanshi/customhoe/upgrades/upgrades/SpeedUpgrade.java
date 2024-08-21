@@ -8,19 +8,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.List;
 import java.util.TreeSet;
 
-public class SpeedUpgrade implements Upgrade {
-    @Override
-    public List<Level> getLevels() {
-        return null;
+public class SpeedUpgrade extends Upgrade {
+
+    public SpeedUpgrade(List<Level> levels, String name) {
+        super(levels, name);
     }
 
     @Override
-    public String getName() {
-        return "Player Speed Upgrade";
-    }
-
-    @Override
-    public void onCropBreak(BlockBreakEvent event, Player player) {
+    protected void onCropBreak(BlockBreakEvent event, Player player) {
 
     }
 }

@@ -8,20 +8,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import java.util.List;
 import java.util.TreeSet;
 
-public class NPCUpgrade implements Upgrade {
+public class NPCUpgrade extends Upgrade {
 
-    @Override
-    public List<Level> getLevels() {
-        return null;
+    public NPCUpgrade(List<Level> levels, String name) {
+        super(levels, name);
     }
 
     @Override
-    public String getName() {
-        return "NPC Upgrade";
-    }
-
-    @Override
-    public void onCropBreak(BlockBreakEvent event, Player player) {
+    protected void onCropBreak(BlockBreakEvent event, Player player) {
 
     }
 }

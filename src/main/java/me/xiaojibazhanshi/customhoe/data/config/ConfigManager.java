@@ -2,40 +2,26 @@ package me.xiaojibazhanshi.customhoe.data.config;
 
 import lombok.Getter;
 import me.xiaojibazhanshi.customhoe.CustomHoe;
+import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
+import me.xiaojibazhanshi.customhoe.upgrades.property.IntegerProperty;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import static me.xiaojibazhanshi.customhoe.utils.CommonUtil.color;
-import static me.xiaojibazhanshi.customhoe.utils.CommonUtil.nullCheckCI;
-
 @Getter
-public class ConfigManager {
-
-    enum Prefix {
-        MAIN_GUI("guis.main-gui."),
-        
-        ;
-
-
-        private final String path;
-
-        Prefix(String path) {
-            this.path = path;
-        }
-
-        public String getPath() {
-            return path;
-        }
-    }
+public class ConfigManager extends Util {
 
     private final FileConfiguration config;
 
     private String mainGuiName;
     private int mainGuiRows;
-    private Map<Integer, String> mainGuiSlotLayout;
 
     private int xUpgradeGuiRows;
     private boolean hideFarLevels;
@@ -43,11 +29,11 @@ public class ConfigManager {
     private boolean fillGuis;
     private Material fillerMaterial;
 
-    private Upgrade autoReplant;
-    private Upgrade looting;
-    private Upgrade meteor;
-    private Upgrade npc;
-    private Upgrade speed;
+    private List<Level> speedLevels;
+    private List<Level> lootingLevels;
+    private List<Level> autoReplantLevels;
+    private List<Level> meteorLevels;
+    private List<Level> npcLevels;
 
     public ConfigManager(CustomHoe instance) {
         config = instance.getConfig();
@@ -63,8 +49,25 @@ public class ConfigManager {
     }
 
     private void initializeConfigValues() {
-        this.mainGuiName = color(nullCheckCI(config.getString("guis.main-gui.name"), "guis.main-gui.name"));
+        this.mainGuiName = nullCheckCI(config, "guis.main-gui.name", String.class);
+        this.mainGuiRows = nullCheckCI(config, "guis.main-gui.rows", Integer.class);
 
+        this.xUpgradeGuiRows = nullCheckCI(config, "guis.upgrade-guis.rows", Integer.class);
+        this.hideFarLevels = nullCheckCI(config, "guis.upgrade-guis.hide-far-levels", Boolean.class);
+
+        this.fillGuis = nullCheckCI(config, "guis.fill.enabled", Boolean.class);
+        this.fillerMaterial = Material.valueOf(nullCheckCI(config, "gui.fill.material", String.class));
+
+        this.speedLevels = getUpgradeLevels(config, "player-speed", "potion-amplifier");
+        this.lootingLevels = getUpgradeLevels(config, "looting", "crop-multiplier");
+        this.autoReplantLevels = getUpgradeLevels(config, "auto-replant", null);
+        this.meteorLevels = getUpgradeLevels(config, "meteor", "radius");
+        this.npcLevels = getUpgradeLevels(config, "npc", "npc-lifetime-seconds");
     }
+
+
+
+
+
 
 }
