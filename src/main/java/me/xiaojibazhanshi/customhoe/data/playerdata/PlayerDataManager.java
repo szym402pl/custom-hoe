@@ -3,6 +3,8 @@ package me.xiaojibazhanshi.customhoe.data.playerdata;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
+import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
+import me.xiaojibazhanshi.customhoe.upgrades.upgrades.AutoReplantUpgrade;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -16,11 +18,13 @@ import java.util.UUID;
 
 public class PlayerDataManager {
 
+    private final UpgradeManager upgradeManager;
     private final File dataFile;
     private final Gson gson = new Gson();
     private Map<UUID, PlayerData> playerDataMap;
 
-    public PlayerDataManager(File dataFolder) {
+    public PlayerDataManager(File dataFolder, UpgradeManager upgradeManager) {
+        this.upgradeManager = upgradeManager;
         this.dataFile = new File(dataFolder, "playerdata.json");
         this.playerDataMap = new HashMap<>();
         loadPlayerData();
@@ -41,7 +45,7 @@ public class PlayerDataManager {
         }
     }
 
-    public void savePlayerData() {
+    private void savePlayerData() {
         try (FileWriter writer = new FileWriter(dataFile)) {
             gson.toJson(playerDataMap, writer);
         } catch (IOException e) {
@@ -50,10 +54,14 @@ public class PlayerDataManager {
     }
 
     public PlayerData getPlayerData(Player player) {
-        return playerDataMap.computeIfAbsent(player.getUniqueId(), uuid -> new PlayerData(uuid, new HashMap<>()));
+        return playerDataMap.computeIfAbsent(player.getUniqueId(), uuid ->  {
+            Map<Upgrade, Integer> upgradeLevels = new HashMap<>();
+
+            return new PlayerData(uuid, upgradeLevels);
+        });
     }
 
-    public <T extends Upgrade> void setPlayerUpgradeLevel(Player player, T upgrade, int level) {
+    public void setPlayerUpgradeLevel(Player player, Upgrade upgrade, int level) {
         PlayerData playerData = getPlayerData(player);
         playerData.upgradeLevels().put(upgrade, level);
         savePlayerData();
@@ -61,7 +69,7 @@ public class PlayerDataManager {
 
     public int getPlayerUpgradeLevel(Player player, Upgrade upgrade) {
         PlayerData playerData = getPlayerData(player);
-        return playerData.upgradeLevels().getOrDefault(upgrade, 0);
+        return playerData.upgradeLevels().getOrDefault(upgrade, 1);
     }
 
     public void saveAllData() {

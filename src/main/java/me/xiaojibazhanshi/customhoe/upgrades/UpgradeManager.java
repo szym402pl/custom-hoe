@@ -3,6 +3,7 @@ package me.xiaojibazhanshi.customhoe.upgrades;
 import lombok.Getter;
 import me.xiaojibazhanshi.customhoe.CustomHoe;
 import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
+import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.upgrades.*;
 
 import java.util.Arrays;
