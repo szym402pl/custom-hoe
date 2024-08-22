@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +44,7 @@ public class CommonUtil {
 
         hoe.setItemMeta(hoeMeta);
 
-        return null;
+        return hoe;
     }
 
     public static ItemStack applyPlayerData(ItemStack customHoe, PlayerData playerData) {
@@ -61,10 +62,10 @@ public class CommonUtil {
         }
 
         lore.add("");
-        lore.add(color("&7Upgrades: (&a5&7)"));
+        lore.add(color("&7Upgrades: (&a" + upgradeLevels.size() + "&7)"));
 
         for (String upgrade : upgradeLevels.keySet()) {
-            lore.add(color("&a" + upgrade + " &7(&aLevel &b" + upgradeLevels.get(upgrade) + "&7)"));
+            lore.add(color("&a" + upgrade + " &7(&bLVL " + upgradeLevels.get(upgrade) + "&7)"));
         }
 
         customHoeMeta.setLore(lore);
@@ -74,7 +75,8 @@ public class CommonUtil {
     }
 
     public static boolean isCustomHoe(ItemStack item) {
-        return item.getType().equals(Material.DIAMOND_HOE)
+        return item != null
+                && item.getType().equals(Material.DIAMOND_HOE)
                 && item.getItemMeta() != null
                 && item.getItemMeta().hasEnchantmentGlintOverride()
                 && item.getItemMeta().hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
@@ -124,11 +126,31 @@ public class CommonUtil {
     }
 
     public static boolean containsHoe(Inventory inventory) {
+        if (inventory.isEmpty()) return false;
+
         for (ItemStack item : inventory.getContents()) {
+            if (item == null || item.getType() == Material.AIR) continue;
             if (CommonUtil.isCustomHoe(item)) return true;
         }
 
         return false;
+    }
+
+    public static ItemStack makeItem(String name, Material material, @Nullable List<String> lore) {
+        ItemStack item = new ItemStack(material);
+        ItemMeta itemMeta = item.getItemMeta();
+        assert itemMeta != null;
+
+        itemMeta.setDisplayName(color(name));
+        List<String> coloredLore = new ArrayList<>();
+
+        if (lore != null)
+            lore.forEach(line -> coloredLore.add(color(line)));
+
+        itemMeta.setLore(coloredLore);
+        item.setItemMeta(itemMeta);
+
+        return item;
     }
 
 }

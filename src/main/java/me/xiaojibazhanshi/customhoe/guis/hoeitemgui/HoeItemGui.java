@@ -25,21 +25,21 @@ public class HoeItemGui {
 
     public void openGui(Player player) {
         Gui gui = Gui.gui()
-                .type(GuiType.DISPENSER)
+                .rows(1)
                 .title(Component.text(color("&7Your tool")))
                 .create();
 
         PlayerData playerData = playerDataManager.getPlayerData(player);
         ItemStack hoe = CommonUtil.applyPlayerData(CommonUtil.getBaseHoe(player), playerData);
 
-        assert hoe != null;
-
-        gui.setItem(1, 5, ItemBuilder.from(hoe).asGuiItem(event -> {
+        gui.setItem(4, ItemBuilder.from(hoe).asGuiItem(event -> {
             event.setCancelled(true);
             player.closeInventory();
 
             handleHoeRetrieval(player, hoe);
         }));
+
+        gui.open(player);
     }
 
     private void handleHoeRetrieval(Player player, ItemStack hoe) {

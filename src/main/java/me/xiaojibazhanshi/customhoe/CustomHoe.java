@@ -30,8 +30,9 @@ public final class CustomHoe extends JavaPlugin {
         getCommand("hoetool").setExecutor(new HoeCommand(playerDataManager));
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(playerDataManager), this);
-        Bukkit.getPluginManager().registerEvents(new RightClickListener(), this);
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(upgradeManager, playerDataManager), this);
+        Bukkit.getPluginManager().registerEvents
+                (new RightClickListener(configManager, upgradeManager, playerDataManager), this);
     }
 
     @Override

@@ -1,23 +1,72 @@
 package me.xiaojibazhanshi.customhoe.guis.maingui;
 
+import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import dev.triumphteam.gui.guis.GuiItem;
+import me.xiaojibazhanshi.customhoe.common.CommonUtil;
+import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
+import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerData;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
+import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-public class MainGui extends MainGuiHelper {
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
-    //private PlayerDataManager playerDataManager;
-    //private UpgradeManager upgradeManager;
+import static me.xiaojibazhanshi.customhoe.common.CommonUtil.color;
+import static me.xiaojibazhanshi.customhoe.common.CommonUtil.makeItem;
+
+public class MainGui {
+
+    private final ConfigManager configManager;
+    private final UpgradeManager upgradeManager;
+    private final PlayerDataManager playerDataManager;
+
+    public MainGui(ConfigManager configManager, UpgradeManager upgradeManager, PlayerDataManager playerDataManager) {
+        this.playerDataManager = playerDataManager;
+        this.upgradeManager = upgradeManager;
+        this.configManager = configManager;
+    }
 
     public void openGui(Player player) {
+        String guiName = configManager.getMainGuiName();
+        int rows = configManager.getMainGuiRows();
+        boolean fill = configManager.isFillGuis();
+        Material fillerMaterial = configManager.getFillerMaterial();
+        PlayerData playerData = playerDataManager.getPlayerData(player);
+
         Gui gui = Gui.gui()
-                .rows(3)
-                .title(Component.text("Main Gui"))
+                .rows(rows)
+                .title(Component.text(color(guiName)))
                 .create();
+
+        int[] slots = {2,3,4,5,6};
+        
+
+        if (fill) {
+            gui.getFiller().fill(ItemBuilder.from(makeItem(" ", fillerMaterial, null)).asGuiItem(event -> {
+                event.setCancelled(true);
+            }));
+        }
 
         gui.open(player);
     }
+
+    private ItemStack createUpgradeItemStack(Upgrade upgrade, PlayerData playerData, Material material) {
+        String name = upgrade.getColoredName();
+        List<String> lore = upgrade.getDescription();
+        lore.add("");
+        lore.add(color("&aCurrent level: &b" + playerData.upgradeLevels().get(upgrade)));
+
+        return CommonUtil.makeItem(name, material, lore);
+    }
+
+
 
 }
