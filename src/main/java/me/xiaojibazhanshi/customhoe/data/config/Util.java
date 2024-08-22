@@ -7,13 +7,14 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Util {
 
-    /** Null checks a config object in a specified path */
+    /**
+     * Null checks a config object in a specified path
+     */
     protected <T> T nullCheckCI(FileConfiguration config, String path, Class<T> clazz) {
         Object obj = config.get(path);
 

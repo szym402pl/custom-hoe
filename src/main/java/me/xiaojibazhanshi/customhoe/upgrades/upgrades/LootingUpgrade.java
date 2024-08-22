@@ -26,6 +26,7 @@ public class LootingUpgrade extends Upgrade {
         if (CommonUtil.isLuckNotOnYourSide(chance)) return;
 
         List<ItemStack> drops = (List<ItemStack>) event.getBlock().getDrops();
+
         drops.forEach(drop -> {
             for (int i = 1; i < cropMultiplier; i++) {
                 event.getBlock().getDrops().add(drop);

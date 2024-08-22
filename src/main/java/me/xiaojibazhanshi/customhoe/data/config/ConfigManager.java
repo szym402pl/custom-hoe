@@ -3,16 +3,10 @@ package me.xiaojibazhanshi.customhoe.data.config;
 import lombok.Getter;
 import me.xiaojibazhanshi.customhoe.CustomHoe;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
-import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 public class ConfigManager extends Util {
@@ -63,10 +57,6 @@ public class ConfigManager extends Util {
         this.meteorLevels = getUpgradeLevels(config, "meteor", "radius");
         this.npcLevels = getUpgradeLevels(config, "npc", "npc-lifetime-seconds");
     }
-
-
-
-
 
 
 }

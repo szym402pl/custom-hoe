@@ -21,8 +21,10 @@ public class MeteorUpgrade extends Upgrade {
         Level level = this.getLevel(levelInt);
 
         double chance = level.chanceToTrigger();
+        int radius = level.getExtraValue("radius", int.class);
         if (CommonUtil.isLuckNotOnYourSide(chance)) return;
 
+        CommonUtil.replantCropsInRadiusAround(event.getBlock(), radius);
         player.sendTitle("", "Meteor upgrade triggered", 10, 15, 5);
     }
 }

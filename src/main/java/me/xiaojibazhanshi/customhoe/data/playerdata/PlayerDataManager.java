@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
-import me.xiaojibazhanshi.customhoe.upgrades.upgrades.AutoReplantUpgrade;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -35,7 +34,8 @@ public class PlayerDataManager {
             return;
         }
         try (FileReader reader = new FileReader(dataFile)) {
-            Type type = new TypeToken<Map<UUID, PlayerData>>() {}.getType();
+            Type type = new TypeToken<Map<UUID, PlayerData>>() {
+            }.getType();
             playerDataMap = gson.fromJson(reader, type);
             if (playerDataMap == null) {
                 playerDataMap = new HashMap<>();
@@ -54,7 +54,7 @@ public class PlayerDataManager {
     }
 
     public PlayerData getPlayerData(Player player) {
-        return playerDataMap.computeIfAbsent(player.getUniqueId(), uuid ->  {
+        return playerDataMap.computeIfAbsent(player.getUniqueId(), uuid -> {
             Map<Upgrade, Integer> upgradeLevels = new HashMap<>();
 
             return new PlayerData(uuid, upgradeLevels);
