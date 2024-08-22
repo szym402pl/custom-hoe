@@ -39,8 +39,8 @@ public class Util {
         for (String level : section.getKeys(false)) {
             int levelInt = Integer.parseInt(level);
             double chance = nullCheckCI
-                    (config, section.getCurrentPath() + "." + level + ".chance-to-trigger", Double.class);
-            int cost = nullCheckCI(config, section.getCurrentPath() + "." + level + ".cost", Integer.class);
+                    (config, section.getCurrentPath() + "." + level + ".chance-to-trigger", double.class);
+            int cost = nullCheckCI(config, section.getCurrentPath() + "." + level + ".cost", int.class);
 
             Map<String, Object> extraValueMap = extraValueId == null
                     ? null

@@ -12,6 +12,14 @@ upgrades:
         chance-to-trigger: 1.0 # this is in percent
         cost: 0 # has to be a full integer
         potion-amplifier: 0 # lowest potion amplifier, this has to be a full integer (no decimals)
+      2:
+        chance-to-trigger: 2.0
+        cost: 200
+        potion-amplifier: 0
+      3:
+        chance-to-trigger: 4.0
+        cost: 500
+        potion-amplifier: 0
   looting:
     levels:
       1:

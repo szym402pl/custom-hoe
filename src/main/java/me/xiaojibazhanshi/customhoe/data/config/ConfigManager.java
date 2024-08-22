@@ -4,7 +4,6 @@ import lombok.Getter;
 import me.xiaojibazhanshi.customhoe.CustomHoe;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
-import me.xiaojibazhanshi.customhoe.upgrades.property.IntegerProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
