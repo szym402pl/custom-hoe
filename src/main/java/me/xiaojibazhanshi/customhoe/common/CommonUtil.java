@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -120,6 +121,14 @@ public class CommonUtil {
                 replantCrop(targetBlock, targetBlock.getType(), 1);
             }
         }
+    }
+
+    public static boolean containsHoe(Inventory inventory) {
+        for (ItemStack item : inventory.getContents()) {
+            if (CommonUtil.isCustomHoe(item)) return true;
+        }
+
+        return false;
     }
 
 }

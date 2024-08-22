@@ -38,17 +38,17 @@ public class Util {
                 nullCheckCI(config, "upgrades." + configName + ".levels", ConfigurationSection.class);
 
         for (String level : section.getKeys(false)) {
+            String currentPath = "upgrades." + configName + ".levels.";
+
             int levelInt = Integer.parseInt(level);
-            double chance = nullCheckCI
-                    (config, section.getCurrentPath() + "." + level + ".chance-to-trigger", double.class);
-            int cost = nullCheckCI(config, section.getCurrentPath() + "." + level + ".cost", int.class);
+            double chance = nullCheckCI(config, currentPath + level + ".chance-to-trigger", Double.class);
+            int cost = nullCheckCI(config, currentPath + level + ".cost", Integer.class);
 
             Map<String, Object> extraValueMap = extraValueId == null
                     ? null
-                    : Map.of(extraValueId, Integer.parseInt(
-                    nullCheckCI(config,
-                            section.getCurrentPath() + "." + level + "." + extraValueId,
-                            String.class)));
+                    : Map.of(extraValueId, nullCheckCI(config,
+                            currentPath + level + "." + extraValueId,
+                            Integer.class));
 
             list.add(new Level(levelInt, chance, cost, extraValueMap));
         }

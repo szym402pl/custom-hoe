@@ -1,14 +1,30 @@
 package me.xiaojibazhanshi.customhoe.listeners;
 
+import me.xiaojibazhanshi.customhoe.common.CommonUtil;
+import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
+import me.xiaojibazhanshi.customhoe.guis.hoeitemgui.HoeItemGui;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 public class JoinListener implements Listener {
 
+    PlayerDataManager playerDataManager;
+
+    public JoinListener(PlayerDataManager playerDataManager) {
+        this.playerDataManager = playerDataManager;
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
-        // check if the player's inv contains the custom hoe, if not, show the GUI
+        Player player = event.getPlayer();
+
+        if (!CommonUtil.containsHoe(player.getInventory())) {
+            HoeItemGui gui = new HoeItemGui(playerDataManager);
+            gui.openGui(player);
+        }
+
     }
 
 }

@@ -49,7 +49,7 @@ public class ConfigManager extends Util {
         this.hideFarLevels = nullCheckCI(config, "guis.upgrade-guis.hide-far-levels", Boolean.class);
 
         this.fillGuis = nullCheckCI(config, "guis.fill.enabled", Boolean.class);
-        this.fillerMaterial = Material.valueOf(nullCheckCI(config, "gui.fill.material", String.class));
+        this.fillerMaterial = Material.valueOf(nullCheckCI(config, "guis.fill.material", String.class).toUpperCase());
 
         this.speedLevels = getUpgradeLevels(config, "player-speed", "potion-amplifier");
         this.lootingLevels = getUpgradeLevels(config, "looting", "crop-multiplier");
