@@ -10,8 +10,8 @@ import java.util.TreeSet;
 
 public class MeteorUpgrade extends Upgrade {
 
-    public MeteorUpgrade(List<Level> levels, String name) {
-        super(levels, name);
+    public MeteorUpgrade(List<Level> levels) {
+        super("Meteor", levels);
     }
 
     @Override

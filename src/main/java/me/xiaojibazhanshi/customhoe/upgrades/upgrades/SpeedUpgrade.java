@@ -10,8 +10,8 @@ import java.util.TreeSet;
 
 public class SpeedUpgrade extends Upgrade {
 
-    public SpeedUpgrade(List<Level> levels, String name) {
-        super(levels, name);
+    public SpeedUpgrade(List<Level> levels) {
+        super("Speed", levels);
     }
 
     @Override

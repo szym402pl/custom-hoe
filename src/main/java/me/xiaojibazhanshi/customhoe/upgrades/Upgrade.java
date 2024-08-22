@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 public abstract class Upgrade {
 
-    public Upgrade(List<Level> levels, String name) {
+    public Upgrade(String name, List<Level> levels) {
         this.levels = levels;
         this.name = name;
     }

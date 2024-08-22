@@ -10,8 +10,8 @@ import java.util.TreeSet;
 
 public class LootingUpgrade extends Upgrade {
 
-    public LootingUpgrade(List<Level> levels, String name) {
-        super(levels, name);
+    public LootingUpgrade(List<Level> levels) {
+        super("Looting", levels);
     }
 
     @Override

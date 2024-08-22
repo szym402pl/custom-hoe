@@ -10,8 +10,8 @@ import java.util.TreeSet;
 
 public class NPCUpgrade extends Upgrade {
 
-    public NPCUpgrade(List<Level> levels, String name) {
-        super(levels, name);
+    public NPCUpgrade(List<Level> levels) {
+        super("NPC", levels);
     }
 
     @Override
