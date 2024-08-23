@@ -3,6 +3,7 @@ package me.xiaojibazhanshi.customhoe.guis.hoeitemgui;
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
 import me.xiaojibazhanshi.customhoe.common.CommonUtil;
+import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerData;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import net.kyori.adventure.text.Component;
@@ -11,21 +12,25 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 import static me.xiaojibazhanshi.customhoe.common.CommonUtil.color;
 import static me.xiaojibazhanshi.customhoe.common.CommonUtil.containsHoe;
 
 public class HoeItemGui {
 
     private final PlayerDataManager playerDataManager;
+    private final ConfigManager configManager;
 
-    public HoeItemGui(PlayerDataManager playerDataManager) {
+    public HoeItemGui(PlayerDataManager playerDataManager, ConfigManager configManager) {
+        this.configManager = configManager;
         this.playerDataManager = playerDataManager;
     }
 
     public void openGui(Player player) {
         Gui gui = Gui.gui()
                 .rows(1)
-                .title(Component.text(color("&7Your tool")))
+                .title(Component.text(color("&8Your tool")))
                 .create();
 
         PlayerData playerData = playerDataManager.getPlayerData(player);
@@ -37,6 +42,13 @@ public class HoeItemGui {
 
             handleHoeRetrieval(player, hoe);
         }));
+
+        if (configManager.isFillGuis()) {
+            gui.getFiller()
+                    .fill(ItemBuilder
+                            .from(CommonUtil.makeItem(" ", configManager.getFillerMaterial(), List.of("")))
+                            .asGuiItem(event -> event.setCancelled(true)));
+        }
 
         gui.open(player);
     }

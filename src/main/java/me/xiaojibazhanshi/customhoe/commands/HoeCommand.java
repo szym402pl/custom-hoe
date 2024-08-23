@@ -44,7 +44,7 @@ public class HoeCommand implements CommandExecutor {
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded the config!");
 
         } else {
-            HoeItemGui gui = new HoeItemGui(playerDataManager);
+            HoeItemGui gui = new HoeItemGui(playerDataManager, configManager);
             gui.openGui(player);
         }
 

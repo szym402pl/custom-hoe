@@ -26,7 +26,10 @@ public class AutoReplantUpgrade extends Upgrade {
         return List.of("", color("&7This upgrade will replant"), color("&7a broken crop for you."));
     }
 
-
+    @Override
+    public void sendTriggerMessage(Player player) {
+        player.sendMessage(color("&aYour crop has been replanted!"));
+    }
 
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {

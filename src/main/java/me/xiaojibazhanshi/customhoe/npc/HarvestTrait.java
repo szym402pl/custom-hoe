@@ -64,7 +64,7 @@ public class HarvestTrait extends Trait {
                 }
 
                 if (secondsLeft <= 0) {
-                    getNPC().despawn();
+                    getNPC().despawn(DespawnReason.REMOVAL);
                     this.cancel();
                 }
 

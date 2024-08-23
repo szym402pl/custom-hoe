@@ -74,6 +74,8 @@ public class CommonUtil {
             for (String upgrade : upgradeLevels.keySet()) {
                 lore.add(color("&a&l" + upgrade + " &8-> &7Level &b" + upgradeLevels.get(upgrade)));
             }
+
+            lore.add("");
         }
 
         customHoeMeta.setLore(lore);

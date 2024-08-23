@@ -23,7 +23,10 @@ public class LootingUpgrade extends Upgrade {
         return List.of("", color("&7This upgrade will give you"), color("&7more crop per harvest."));
     }
 
-
+    @Override
+    public void sendTriggerMessage(Player player) {
+        player.sendMessage(color("&aThe crop you've harvested has yielded more than usual!"));
+    }
 
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {

@@ -1,6 +1,7 @@
 package me.xiaojibazhanshi.customhoe.listeners;
 
 import me.xiaojibazhanshi.customhoe.common.CommonUtil;
+import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
@@ -17,10 +18,12 @@ public class BlockBreakListener implements Listener {
 
     UpgradeManager upgradeManager;
     PlayerDataManager playerDataManager;
+    ConfigManager configManager;
 
-    public BlockBreakListener(UpgradeManager upgradeManager, PlayerDataManager playerDataManager) {
+    public BlockBreakListener(UpgradeManager upgradeManager, PlayerDataManager playerDataManager, ConfigManager configManager) {
         this.upgradeManager = upgradeManager;
         this.playerDataManager = playerDataManager;
+        this.configManager = configManager;
     }
 
     @EventHandler
@@ -45,6 +48,10 @@ public class BlockBreakListener implements Listener {
 
         for (Upgrade upgrade : upgradeManager.getAllUpgrades()) {
             upgrade.onCropBreak(event, event.getPlayer(), playerDataManager);
+
+            if (configManager.isNotifyOnTrigger()) {
+                upgrade.sendTriggerMessage(event.getPlayer());
+            }
         }
     }
 

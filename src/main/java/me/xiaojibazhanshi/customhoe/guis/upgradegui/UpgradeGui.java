@@ -2,12 +2,14 @@ package me.xiaojibazhanshi.customhoe.guis.upgradegui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import me.xiaojibazhanshi.customhoe.CustomHoe;
 import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import net.kyori.adventure.text.Component;
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -39,7 +41,7 @@ public class UpgradeGui {
 
         Gui gui = Gui.gui()
                 .rows(rows)
-                .title(Component.text(upgrade.getColoredName()))
+                .title(Component.text(color("&8" + upgrade.getName())))
                 .create();
 
         List<Level> levels = upgrade.getSortedLevels();
@@ -49,13 +51,18 @@ public class UpgradeGui {
             String name = color("&a&lLevel &b&l" + level.level());
             int extraValue = getExtraValue(upgrade, level);
             boolean canBeBought = currentLevel < level.level()
-                    && (level.level() - currentLevel < 2); // && !(vaultCheck) - to be added
+                    && (level.level() - currentLevel < 2);
+
+            Economy econ = CustomHoe.econ;
+            boolean vaultCheck = econ.has(player, level.cost());
 
             List<String> lore = new ArrayList<>(List.of("",
                     color("&7Chance to trigger&7: &b" + level.chanceToTrigger() + "&a%"),
-                    color("&7Cost&7: " + "&b" + level.cost() + "&a$"),
-                    extraValue >= 0 ? color("&7" + extraValueName + "&b" + extraValue) : "", "",
-                    canBeBought ? color("&aYou can buy this upgrade.") : color("&cYou cannot buy this upgrade")
+                    color("&7Cost&7: " + (vaultCheck ? "&b" : "&c") + level.cost() + "&a$"),
+                    extraValue >= 0 ? color("&7" + extraValueName + "&b" + extraValue) : "",
+                    "",
+                    (canBeBought && vaultCheck)
+                            ? color("&aYou can buy this upgrade!") : color("&cYou cannot buy this upgrade!")
             ));
 
             ItemStack item = makeItem(name, Material.EXPERIENCE_BOTTLE, lore);
@@ -79,6 +86,7 @@ public class UpgradeGui {
                 event.setCancelled(true);
                 player.closeInventory();
                 Level level = itemLevelMap.get(item);
+                Economy econ = CustomHoe.econ;
 
                 if (currentLevel >= level.level()) {
                     player.sendMessage(ChatColor.RED + "Your level of this upgrade is already the same or higher!");
@@ -87,9 +95,9 @@ public class UpgradeGui {
                 }
 
                 assert item.getItemMeta() != null && item.getItemMeta().getLore() != null;
-                boolean vaultCheck = item.getItemMeta().getLore().contains("You can buy this upgrade");
+                boolean hasMoney = econ.getBalance(player) >= level.cost();
 
-                if (vaultCheck) {
+                if (!hasMoney) {
                     player.sendMessage(ChatColor.RED + "You don't have enough money to buy this upgrade!");
                     player.playSound(player, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F);
                     return;
@@ -99,13 +107,14 @@ public class UpgradeGui {
                 CommonUtil.updateHoe(player.getInventory(), player, playerDataManager.getPlayerData(player));
                 player.sendMessage(color("&aSuccessfully bought the upgrade!"));
                 player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1.0F, 1.0F);
+                econ.withdrawPlayer(player, level.cost());
             }));
         }
 
         if (hideFarLevels) {
             for (int i = currentLevel + 1; i < levels.size(); i++) {
                 gui.setItem(i, ItemBuilder
-                        .from(makeItem("&cYou can't view this level's details yet!", Material.BARRIER, null))
+                        .from(makeItem("&cYou have to buy the previous level first!", Material.BARRIER, null))
                         .asGuiItem(event -> event.setCancelled(true)));
             }
         }

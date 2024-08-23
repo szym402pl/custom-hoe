@@ -22,7 +22,10 @@ public class MeteorUpgrade extends Upgrade {
         return List.of("", color("&7This upgrade will break"), color("&7crop in a given radius."));
     }
 
-
+    @Override
+    public void sendTriggerMessage(Player player) {
+        player.sendMessage(color("&aA meteor fell on your crops!"));
+    }
 
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {

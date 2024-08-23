@@ -24,7 +24,10 @@ public class SpeedUpgrade extends Upgrade {
         return List.of("", color("&7This upgrade will give you"), color("&7a temporary speed boost."));
     }
 
-
+    @Override
+    public void sendTriggerMessage(Player player) {
+        player.sendMessage(color("&aYou've been blessed with speed!"));
+    }
 
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {

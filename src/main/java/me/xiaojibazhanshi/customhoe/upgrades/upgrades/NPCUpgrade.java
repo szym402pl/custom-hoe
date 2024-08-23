@@ -26,6 +26,11 @@ public class NPCUpgrade extends Upgrade {
     }
 
     @Override
+    public void sendTriggerMessage(Player player) {
+        // do nothing, farmer already does everything
+    }
+
+    @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
         if (levelInt <= 0) return; // no upgrade, don't do anything
