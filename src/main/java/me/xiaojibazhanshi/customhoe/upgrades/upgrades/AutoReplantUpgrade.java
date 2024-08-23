@@ -32,7 +32,7 @@ public class AutoReplantUpgrade extends Upgrade {
     }
 
     @Override
-    public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
+    public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager, boolean notify) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
         if (levelInt <= 0) return; // no upgrade, don't do anything
 
@@ -46,5 +46,9 @@ public class AutoReplantUpgrade extends Upgrade {
 
         CommonUtil.replantCrop(block, block.getType(), 1);
         player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+
+        if (notify) {
+            sendTriggerMessage(player);
+        }
     }
 }

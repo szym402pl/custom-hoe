@@ -44,7 +44,7 @@ public final class CustomHoe extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents
                 (new RightClickListener(configManager, upgradeManager, playerDataManager), this);
 
-        if (!setupEconomy() ) {
+        if (!setupEconomy()) {
             getLogger().severe("- Disabled due to no Vault dependency found!");
             getServer().getPluginManager().disablePlugin(this);
         }

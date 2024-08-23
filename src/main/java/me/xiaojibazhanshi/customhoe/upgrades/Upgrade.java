@@ -36,7 +36,8 @@ public abstract class Upgrade {
     } // - 1 to match the index
 
     public abstract List<String> getDescription();
+
     public abstract void sendTriggerMessage(Player player);
 
-    public abstract void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager);
+    public abstract void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager, boolean notify);
 }

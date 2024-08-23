@@ -37,7 +37,7 @@ public class PlayerDataManager {
         loadPlayerData();
     }
 
-    private void loadPlayerData() {
+    public void loadPlayerData() {
         if (!dataFile.exists()) {
             return;
         }

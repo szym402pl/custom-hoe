@@ -3,7 +3,6 @@ package me.xiaojibazhanshi.customhoe.npc;
 import me.xiaojibazhanshi.customhoe.CustomHoe;
 import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import net.citizensnpcs.api.event.DespawnReason;
-import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.trait.TraitName;
 import net.citizensnpcs.api.util.DataKey;
@@ -13,7 +12,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -141,7 +139,7 @@ public class HarvestTrait extends Trait {
         this.owner = Bukkit.getPlayer(java.util.UUID.fromString(key.getString("owner")));
     }
 
-    private enum HarvestState{
+    private enum HarvestState {
         GATHERING,
         READY;
     }

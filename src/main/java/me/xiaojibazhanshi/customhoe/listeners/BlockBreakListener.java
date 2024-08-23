@@ -47,11 +47,7 @@ public class BlockBreakListener implements Listener {
         }
 
         for (Upgrade upgrade : upgradeManager.getAllUpgrades()) {
-            upgrade.onCropBreak(event, event.getPlayer(), playerDataManager);
-
-            if (configManager.isNotifyOnTrigger()) {
-                upgrade.sendTriggerMessage(event.getPlayer());
-            }
+            upgrade.onCropBreak(event, event.getPlayer(), playerDataManager, configManager.isNotifyOnTrigger());
         }
     }
 

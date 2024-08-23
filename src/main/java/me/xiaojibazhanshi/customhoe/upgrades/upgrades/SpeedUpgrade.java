@@ -4,6 +4,7 @@ import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.potion.PotionEffect;
@@ -30,7 +31,7 @@ public class SpeedUpgrade extends Upgrade {
     }
 
     @Override
-    public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
+    public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager, boolean notify) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
         if (levelInt <= 0) return; // no upgrade, don't do anything
 
@@ -43,6 +44,10 @@ public class SpeedUpgrade extends Upgrade {
         PotionEffect potionEffect = new PotionEffect(PotionEffectType.SPEED, 10 * 20, potionAmplifier);
 
         player.addPotionEffect(potionEffect);
-        player.sendTitle("", "Speed upgrade triggered", 10, 15, 5);
+        player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
+
+        if (notify) {
+            sendTriggerMessage(player);
+        }
     }
 }

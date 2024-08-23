@@ -39,9 +39,11 @@ public class HoeCommand implements CommandExecutor {
                 && args[0].equalsIgnoreCase("reload")
                 && player.isOp()) {
 
+            playerDataManager.saveAllData();
             configManager.reload(instance);
             upgradeManager.reload();
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded the config!");
+            playerDataManager.loadPlayerData();
 
         } else {
             HoeItemGui gui = new HoeItemGui(playerDataManager, configManager);
