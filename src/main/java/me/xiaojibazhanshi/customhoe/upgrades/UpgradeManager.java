@@ -5,7 +5,10 @@ import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.upgrades.upgrades.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Getter
 public class UpgradeManager {
@@ -16,12 +19,20 @@ public class UpgradeManager {
     private final NPCUpgrade npcUpgrade;
     private final SpeedUpgrade speedUpgrade;
 
+    private final Map<String, Upgrade> upgradeRegistry = new HashMap<>();
+
     public UpgradeManager(ConfigManager configManager) {
         this.autoReplantUpgrade = new AutoReplantUpgrade(configManager.getAutoReplantLevels());
         this.lootingUpgrade = new LootingUpgrade(configManager.getLootingLevels());
         this.meteorUpgrade = new MeteorUpgrade(configManager.getMeteorLevels());
         this.npcUpgrade = new NPCUpgrade(configManager.getNpcLevels());
         this.speedUpgrade = new SpeedUpgrade(configManager.getSpeedLevels());
+
+        registerUpgrade(autoReplantUpgrade);
+        registerUpgrade(lootingUpgrade);
+        registerUpgrade(meteorUpgrade);
+        registerUpgrade(npcUpgrade);
+        registerUpgrade(speedUpgrade);
     }
 
     public List<Upgrade> getAllUpgrades() {
@@ -33,5 +44,20 @@ public class UpgradeManager {
                 speedUpgrade);
     }
 
+    private void registerUpgrade(Upgrade upgrade) {
+        upgradeRegistry.put(upgrade.getClass().getName(), upgrade);
+    }
 
+    public String getUpgradeKey(Upgrade upgrade) {
+        return upgradeRegistry.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue().equals(upgrade))
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Upgrade getUpgradeFromKey(String key) {
+        return upgradeRegistry.get(key);
+    }
 }

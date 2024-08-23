@@ -62,10 +62,16 @@ public class CommonUtil {
         }
 
         lore.add("");
-        lore.add(color("&7Upgrades: (&a" + upgradeLevels.size() + "&7)"));
 
-        for (String upgrade : upgradeLevels.keySet()) {
-            lore.add(color("&a" + upgrade + " &7(&bLVL " + upgradeLevels.get(upgrade) + "&7)"));
+        if (upgradeLevels.isEmpty()) {
+            lore.add(color("&7&lUpgrades: &c&lnone"));
+        } else {
+            lore.add(color("&7&lUpgrades: (&a&l" + upgradeLevels.size() + "&7&l)"));
+            lore.add("");
+
+            for (String upgrade : upgradeLevels.keySet()) {
+                lore.add(color("&a&l" + upgrade + " &8-> &7Level &b" + upgradeLevels.get(upgrade)));
+            }
         }
 
         customHoeMeta.setLore(lore);
@@ -84,7 +90,6 @@ public class CommonUtil {
 
     public static boolean isFullyGrown(Block block) {
         Ageable ageable = (Ageable) block.getBlockData();
-
         return ageable.getAge() >= 7;
     }
 
@@ -134,6 +139,19 @@ public class CommonUtil {
         }
 
         return false;
+    }
+
+    public static void updateHoe(Inventory inventory, Player player, PlayerData playerData) {
+        if (inventory.isEmpty()) return;
+
+        for (ItemStack item : inventory.getContents()) {
+            if (item == null || item.getType() == Material.AIR) continue;
+
+            if (CommonUtil.isCustomHoe(item)) {
+                inventory.remove(item);
+                inventory.addItem(applyPlayerData(getBaseHoe(player), playerData));
+            }
+        }
     }
 
     public static ItemStack makeItem(String name, Material material, @Nullable List<String> lore) {

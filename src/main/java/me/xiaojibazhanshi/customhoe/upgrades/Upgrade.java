@@ -6,7 +6,9 @@ import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public abstract class Upgrade {
@@ -18,6 +20,12 @@ public abstract class Upgrade {
 
     private final List<Level> levels;
     private final String name;
+
+    public List<Level> getSortedLevels() {
+        return levels.stream()
+                .sorted(Comparator.comparingInt(Level::level))
+                .collect(Collectors.toList());
+    }
 
     public String getColoredName() {
         return CommonUtil.color("&a" + getName());

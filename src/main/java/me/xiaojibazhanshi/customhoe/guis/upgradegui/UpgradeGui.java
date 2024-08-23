@@ -2,6 +2,7 @@ package me.xiaojibazhanshi.customhoe.guis.upgradegui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
+import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
@@ -46,19 +47,20 @@ public class UpgradeGui {
                 .title(Component.text(upgrade.getColoredName()))
                 .create();
 
-        List<Level> levels = upgrade.getLevels();
+        List<Level> levels = upgrade.getSortedLevels();
         Map<ItemStack, Level> itemLevelMap = new HashMap<>();
 
         for (Level level : levels) {
-            String name = color("&aLevel " + level.level());
+            String name = color("&a&lLevel &b&l" + level.level());
             int extraValue = getExtraValue(upgrade, level);
-            boolean canBeBought = currentLevel >= level.level(); // && vaultCheck AAAAAAAAAAA
+            boolean cannotBeBought = currentLevel >= level.level()
+                    && currentLevel + 1 < level.level(); // && vaultCheck AAAAAAAAAAA
 
             List<String> lore = new ArrayList<>(List.of("",
-                    color("&7Chance to trigger: " + level.chanceToTrigger()),
-                    color("&7Cost:" + level.cost()),
-                    extraValue >= 0 ? color("&7" + extraValueName + ": ") + extraValue : "", "",
-                    canBeBought ? color("&cYou cannot buy this upgrade") : color("&aYou can buy this upgrade.")
+                    color("&7Chance to trigger&7: &b" + level.chanceToTrigger() + "&a%"),
+                    color("&7Cost&7: " + "&b" + level.cost() + "&a$"),
+                    extraValue >= 0 ? color("&7" + extraValueName + "&b" + extraValue) : "", "",
+                    cannotBeBought ? color("&cYou cannot buy this upgrade") : color("&aYou can buy this upgrade.")
             ));
 
             ItemStack item = makeItem(name, Material.EXPERIENCE_BOTTLE, lore);
@@ -94,13 +96,14 @@ public class UpgradeGui {
                 }
 
                 playerDataManager.setPlayerUpgradeLevel(player, upgrade, level.level());
+                CommonUtil.updateHoe(player.getInventory(), player, playerDataManager.getPlayerData(player));
                 player.sendMessage(color("&aSuccessfully bought the upgrade!"));
                 player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1.0F, 1.0F);
             }));
         }
 
         if (hideFarLevels) {
-            for (int i = currentLevel + 2; i < levels.size() -1; i++) {
+            for (int i = currentLevel + 1; i < levels.size() -1; i++) {
                 gui.setItem(i, ItemBuilder
                         .from(makeItem("&cYou can't view this level's details yet!", Material.BARRIER, null))
                         .asGuiItem(event -> event.setCancelled(true)));
@@ -119,16 +122,16 @@ public class UpgradeGui {
     private String getExtraValueName(Upgrade upgrade) {
         switch(upgrade.getName().toLowerCase()) {
             case "speed" -> {
-                return "Effect strength: ";
+                return color("Effect strength&7: ");
             }
             case "looting" -> {
-                return "Crop amount: ";
+                return color("Crop amount&7: ");
             }
             case "meteor" -> {
-                return "Radius: ";
+                return color("Radius&7: ");
             }
             case "npc" -> {
-                return "Harvesting time: ";
+                return color("Harvesting time&7: ");
             }
             default -> {
                 return null;
