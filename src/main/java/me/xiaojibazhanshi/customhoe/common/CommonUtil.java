@@ -41,6 +41,7 @@ public class CommonUtil {
         hoeMeta.setDisplayName(color("&4" + player.getName() + "&c's farming tool"));
         hoeMeta.setLore(new ArrayList<>());
         hoeMeta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        hoeMeta.setUnbreakable(true);
         hoeMeta.setEnchantmentGlintOverride(true);
 
         hoe.setItemMeta(hoeMeta);
@@ -86,7 +87,8 @@ public class CommonUtil {
                 && item.getType().equals(Material.DIAMOND_HOE)
                 && item.getItemMeta() != null
                 && item.getItemMeta().hasEnchantmentGlintOverride()
-                && item.getItemMeta().hasItemFlag(ItemFlag.HIDE_ATTRIBUTES);
+                && item.getItemMeta().hasItemFlag(ItemFlag.HIDE_ATTRIBUTES)
+                && item.getItemMeta().isUnbreakable();
     }
 
     public static boolean isFullyGrown(Block block) {
