@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 public class ConfigManager extends Util {
 
-    private final FileConfiguration config;
+    private FileConfiguration config;
 
     private String mainGuiName;
     private int mainGuiRows;
@@ -56,6 +56,18 @@ public class ConfigManager extends Util {
         this.autoReplantLevels = getUpgradeLevels(config, "auto-replant", null);
         this.meteorLevels = getUpgradeLevels(config, "meteor", "radius");
         this.npcLevels = getUpgradeLevels(config, "npc", "npc-lifetime-seconds");
+    }
+
+    public void reload(CustomHoe instance) {
+        instance.reloadConfig();
+
+        instance.getLogger().info("Reloading configuration...");
+        for (String key : config.getKeys(true)) {
+            instance.getLogger().info(key + ": " + config.get(key));
+        }
+
+        this.config = instance.getConfig();
+        initializeConfigValues();
     }
 
 

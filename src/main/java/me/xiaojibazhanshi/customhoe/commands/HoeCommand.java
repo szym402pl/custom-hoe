@@ -1,9 +1,12 @@
 package me.xiaojibazhanshi.customhoe.commands;
 
 import com.sun.tools.javac.Main;
+import me.xiaojibazhanshi.customhoe.CustomHoe;
+import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.guis.hoeitemgui.HoeItemGui;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -12,10 +15,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class HoeCommand implements CommandExecutor {
 
+    private final CustomHoe instance;
     private final PlayerDataManager playerDataManager;
+    private final ConfigManager configManager;
 
-    public HoeCommand(PlayerDataManager playerDataManager) {
-        this.playerDataManager = playerDataManager;
+    public HoeCommand(CustomHoe instance) {
+        this.instance = instance;
+        this.playerDataManager = instance.getPlayerDataManager();
+        this.configManager = instance.getConfigManager();
     }
 
     @Override
@@ -26,8 +33,17 @@ public class HoeCommand implements CommandExecutor {
             return true;
         }
 
-        HoeItemGui gui = new HoeItemGui(playerDataManager);
-        gui.openGui(player);
+        if (args.length == 1
+            && args[0].equalsIgnoreCase("reload")
+            && player.isOp()) {
+
+            configManager.reload(instance);
+            player.sendMessage(ChatColor.GREEN + "Successfully reloaded the config!");
+
+        } else {
+            HoeItemGui gui = new HoeItemGui(playerDataManager);
+            gui.openGui(player);
+        }
 
         return true;
     }

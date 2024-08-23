@@ -100,33 +100,34 @@ public class CommonUtil {
         }
 
         block.setType(material);
+        BlockData blockData = block.getBlockData();
 
-        switch (material) {
-            case WHEAT:
-            case CARROTS:
-            case POTATOES:
-                BlockData blockData = material.createBlockData();
-
-                if (blockData instanceof Ageable ageable) {
-                    ageable.setAge(age);
-                    block.setBlockData(ageable);
-                }
-            default:
-                break;
+        if (blockData instanceof Ageable ageable) {
+            ageable.setAge(age);
+            block.setBlockData(ageable);
+            block.getState().update(true, false);
+            block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(material));
         }
-
-        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(material));
     }
 
     public static void breakCropsInRadiusAround(Block start, int radius) {
         if (radius < 0) return;
+        System.out.println("Started breaking crops in radius: " + radius);
 
+        int startX = start.getX();
         int startY = start.getY();
+        int startZ = start.getZ();
 
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
-                Block targetBlock = start.getRelative(x, startY, z);
-                targetBlock.breakNaturally();
+                double distance = Math.sqrt(x * x + z * z);
+                if (distance > radius) continue;
+
+                Block targetBlock = start.getWorld().getBlockAt(startX + x, startY, startZ + z);
+
+                if (targetBlock.getBlockData() instanceof Ageable) {
+                    targetBlock.breakNaturally();
+                }
             }
         }
     }

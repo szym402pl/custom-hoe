@@ -39,7 +39,11 @@ public class LootingUpgrade extends Upgrade {
         List<ItemStack> drops = (List<ItemStack>) event.getBlock().getDrops();
 
         for (ItemStack drop : drops) {
+            if (drop.getType().toString().toLowerCase().contains("seeds")) continue;
 
+            for (int i = 1; i < cropMultiplier; i++) {
+                event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), drop);
+            }
         }
 
         player.sendTitle("", "Looting upgrade triggered", 10, 15, 5);

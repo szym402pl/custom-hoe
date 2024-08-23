@@ -14,7 +14,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 @Getter
 public final class CustomHoe extends JavaPlugin {
 
-    @Getter
     private CustomHoe main;
     private ConfigManager configManager;
     private PlayerDataManager playerDataManager;
@@ -22,8 +21,9 @@ public final class CustomHoe extends JavaPlugin {
 
     //TODO: Fix upgrade guis implementation,
     // stop player from dropping the hoe (THE TOOL),
-    // add vault,
-    // add npc implementation
+    // add vault implementation,
+    // add npc implementation,
+    // add reload command
 
     @Override
     public void onEnable() {
@@ -32,7 +32,7 @@ public final class CustomHoe extends JavaPlugin {
         upgradeManager = new UpgradeManager(configManager);
         playerDataManager = new PlayerDataManager(getDataFolder(), upgradeManager);
 
-        getCommand("hoetool").setExecutor(new HoeCommand(playerDataManager));
+        getCommand("hoetool").setExecutor(new HoeCommand(this));
 
         Bukkit.getPluginManager().registerEvents(new JoinListener(playerDataManager), this);
         Bukkit.getPluginManager().registerEvents(new BlockBreakListener(upgradeManager, playerDataManager), this);

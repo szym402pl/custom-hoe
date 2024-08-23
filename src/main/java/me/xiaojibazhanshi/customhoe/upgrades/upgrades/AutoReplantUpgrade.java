@@ -36,8 +36,9 @@ public class AutoReplantUpgrade extends Upgrade {
         if (CommonUtil.isLuckNotOnYourSide(chance)) return;
 
         Block block = event.getBlock();
+        event.setCancelled(true);
 
         CommonUtil.replantCrop(block, block.getType(), 1);
-        player.sendTitle("", "AutoReplant upgrade triggered", 10, 15, 5);
+        player.sendTitle("", "Auto Replant upgrade triggered", 10, 15, 5);
     }
 }
