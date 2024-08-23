@@ -30,10 +30,12 @@ public abstract class Upgrade {
     public String getColoredName() {
         return CommonUtil.color("&a" + getName());
     }
+
     public Level getLevel(int level) {
         return getLevels().get(level - 1);
     } // - 1 to match the index
 
     public abstract List<String> getDescription();
+
     public abstract void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager);
 }

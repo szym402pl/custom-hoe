@@ -60,11 +60,7 @@ public class ConfigManager extends Util {
 
     public void reload(CustomHoe instance) {
         instance.reloadConfig();
-
-        instance.getLogger().info("Reloading configuration...");
-        for (String key : config.getKeys(true)) {
-            instance.getLogger().info(key + ": " + config.get(key));
-        }
+        instance.saveConfig();
 
         this.config = instance.getConfig();
         initializeConfigValues();

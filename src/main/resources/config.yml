@@ -54,4 +54,4 @@ guis:
   upgrade-guis:
     rows: 3 # Levels are NOT centered in the GUI
     hide-far-levels: true # this will simply make it so that if a level is 2 higher than the player's,
-                          # it will make it into a barrier block named "Unlock previous level first"
+    # it will make it into a barrier block named "Unlock previous level first"

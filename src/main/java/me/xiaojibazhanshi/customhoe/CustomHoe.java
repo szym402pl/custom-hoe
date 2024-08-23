@@ -23,7 +23,6 @@ public final class CustomHoe extends JavaPlugin {
     // stop player from dropping the hoe (THE TOOL),
     // add vault implementation,
     // add npc implementation,
-    // add reload command
 
     @Override
     public void onEnable() {

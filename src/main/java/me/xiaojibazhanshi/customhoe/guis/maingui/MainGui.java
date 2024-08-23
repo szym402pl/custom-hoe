@@ -2,10 +2,7 @@ package me.xiaojibazhanshi.customhoe.guis.maingui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
-import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
-import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerData;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.guis.upgradegui.UpgradeGui;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
@@ -14,12 +11,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static me.xiaojibazhanshi.customhoe.common.CommonUtil.color;
 import static me.xiaojibazhanshi.customhoe.common.CommonUtil.makeItem;
@@ -47,7 +41,7 @@ public class MainGui {
                 .title(Component.text(color(guiName)))
                 .create();
 
-        gui.setItem(2,3, ItemBuilder.from(createUpgradeItemStack(
+        gui.setItem(2, 3, ItemBuilder.from(createUpgradeItemStack(
                 upgradeManager.getAutoReplantUpgrade(),
                 Material.WHEAT_SEEDS,
                 playerDataManager.getPlayerUpgradeLevel(player, upgradeManager.getAutoReplantUpgrade()))
@@ -59,7 +53,7 @@ public class MainGui {
             upgradeGui.openGui(player, upgradeManager.getAutoReplantUpgrade());
         }));
 
-        gui.setItem(2,4, ItemBuilder.from(createUpgradeItemStack(
+        gui.setItem(2, 4, ItemBuilder.from(createUpgradeItemStack(
                 upgradeManager.getLootingUpgrade(),
                 Material.DIAMOND,
                 playerDataManager.getPlayerUpgradeLevel(player, upgradeManager.getLootingUpgrade()))
@@ -71,7 +65,7 @@ public class MainGui {
             upgradeGui.openGui(player, upgradeManager.getLootingUpgrade());
         }));
 
-        gui.setItem(2,5, ItemBuilder.from(createUpgradeItemStack(
+        gui.setItem(2, 5, ItemBuilder.from(createUpgradeItemStack(
                 upgradeManager.getMeteorUpgrade(),
                 Material.NETHERITE_INGOT,
                 playerDataManager.getPlayerUpgradeLevel(player, upgradeManager.getMeteorUpgrade()))
@@ -83,7 +77,7 @@ public class MainGui {
             upgradeGui.openGui(player, upgradeManager.getMeteorUpgrade());
         }));
 
-        gui.setItem(2,6, ItemBuilder.from(createUpgradeItemStack(
+        gui.setItem(2, 6, ItemBuilder.from(createUpgradeItemStack(
                 upgradeManager.getNpcUpgrade(),
                 Material.VILLAGER_SPAWN_EGG,
                 playerDataManager.getPlayerUpgradeLevel(player, upgradeManager.getNpcUpgrade()))
@@ -95,7 +89,7 @@ public class MainGui {
             upgradeGui.openGui(player, upgradeManager.getNpcUpgrade());
         }));
 
-        gui.setItem(2,7, ItemBuilder.from(createUpgradeItemStack(
+        gui.setItem(2, 7, ItemBuilder.from(createUpgradeItemStack(
                 upgradeManager.getSpeedUpgrade(),
                 Material.IRON_BOOTS,
                 playerDataManager.getPlayerUpgradeLevel(player, upgradeManager.getSpeedUpgrade()))
@@ -124,7 +118,6 @@ public class MainGui {
 
         return makeItem(name, material, lore);
     }
-
 
 
 }

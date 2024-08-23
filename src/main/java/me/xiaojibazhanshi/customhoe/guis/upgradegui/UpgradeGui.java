@@ -7,8 +7,6 @@ import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
-import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
-import me.xiaojibazhanshi.customhoe.upgrades.upgrades.AutoReplantUpgrade;
 import net.kyori.adventure.text.Component;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -16,10 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static me.xiaojibazhanshi.customhoe.common.CommonUtil.color;
 import static me.xiaojibazhanshi.customhoe.common.CommonUtil.makeItem;
@@ -53,14 +48,14 @@ public class UpgradeGui {
         for (Level level : levels) {
             String name = color("&a&lLevel &b&l" + level.level());
             int extraValue = getExtraValue(upgrade, level);
-            boolean cannotBeBought = currentLevel >= level.level()
-                    && currentLevel + 1 < level.level(); // && vaultCheck AAAAAAAAAAA
+            boolean canBeBought = currentLevel < level.level()
+                    && (level.level() - currentLevel < 2); // && !(vaultCheck) - to be added
 
             List<String> lore = new ArrayList<>(List.of("",
                     color("&7Chance to trigger&7: &b" + level.chanceToTrigger() + "&a%"),
                     color("&7Cost&7: " + "&b" + level.cost() + "&a$"),
                     extraValue >= 0 ? color("&7" + extraValueName + "&b" + extraValue) : "", "",
-                    cannotBeBought ? color("&cYou cannot buy this upgrade") : color("&aYou can buy this upgrade.")
+                    canBeBought ? color("&aYou can buy this upgrade.") : color("&cYou cannot buy this upgrade")
             ));
 
             ItemStack item = makeItem(name, Material.EXPERIENCE_BOTTLE, lore);
@@ -74,7 +69,12 @@ public class UpgradeGui {
             itemLevelMap.put(item, level);
         }
 
-        for (ItemStack item : itemLevelMap.keySet()) {
+        Comparator<ItemStack> levelComparator = Comparator.comparingInt(ItemStack::getAmount);
+        Map<ItemStack, Level> sortedMap = new TreeMap<>(levelComparator);
+
+        sortedMap.putAll(itemLevelMap);
+
+        for (ItemStack item : sortedMap.keySet()) {
             gui.addItem(ItemBuilder.from(item).asGuiItem(event -> {
                 event.setCancelled(true);
                 player.closeInventory();
@@ -103,7 +103,7 @@ public class UpgradeGui {
         }
 
         if (hideFarLevels) {
-            for (int i = currentLevel + 1; i < levels.size() -1; i++) {
+            for (int i = currentLevel + 1; i < levels.size(); i++) {
                 gui.setItem(i, ItemBuilder
                         .from(makeItem("&cYou can't view this level's details yet!", Material.BARRIER, null))
                         .asGuiItem(event -> event.setCancelled(true)));
@@ -120,7 +120,7 @@ public class UpgradeGui {
     }
 
     private String getExtraValueName(Upgrade upgrade) {
-        switch(upgrade.getName().toLowerCase()) {
+        switch (upgrade.getName().toLowerCase()) {
             case "speed" -> {
                 return color("Effect strength&7: ");
             }
@@ -140,7 +140,7 @@ public class UpgradeGui {
     }
 
     private int getExtraValue(Upgrade upgrade, Level level) {
-        switch(upgrade.getName().toLowerCase()) {
+        switch (upgrade.getName().toLowerCase()) {
             case "speed" -> {
                 return level.getExtraValue("potion-amplifier", Integer.class);
             }

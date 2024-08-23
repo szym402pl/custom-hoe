@@ -16,6 +16,7 @@ public class MeteorUpgrade extends Upgrade {
     public MeteorUpgrade(List<Level> levels) {
         super("Meteor", levels);
     }
+
     @Override
     public List<String> getDescription() {
         return List.of("", color("&7This upgrade will break"), color("&7crop in a given radius."));

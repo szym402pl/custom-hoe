@@ -1,10 +1,10 @@
 package me.xiaojibazhanshi.customhoe.commands;
 
-import com.sun.tools.javac.Main;
 import me.xiaojibazhanshi.customhoe.CustomHoe;
 import me.xiaojibazhanshi.customhoe.data.config.ConfigManager;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.guis.hoeitemgui.HoeItemGui;
+import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -17,10 +17,12 @@ public class HoeCommand implements CommandExecutor {
 
     private final CustomHoe instance;
     private final PlayerDataManager playerDataManager;
+    private final UpgradeManager upgradeManager;
     private final ConfigManager configManager;
 
     public HoeCommand(CustomHoe instance) {
         this.instance = instance;
+        this.upgradeManager = instance.getUpgradeManager();
         this.playerDataManager = instance.getPlayerDataManager();
         this.configManager = instance.getConfigManager();
     }
@@ -34,10 +36,11 @@ public class HoeCommand implements CommandExecutor {
         }
 
         if (args.length == 1
-            && args[0].equalsIgnoreCase("reload")
-            && player.isOp()) {
+                && args[0].equalsIgnoreCase("reload")
+                && player.isOp()) {
 
             configManager.reload(instance);
+            upgradeManager.reload();
             player.sendMessage(ChatColor.GREEN + "Successfully reloaded the config!");
 
         } else {

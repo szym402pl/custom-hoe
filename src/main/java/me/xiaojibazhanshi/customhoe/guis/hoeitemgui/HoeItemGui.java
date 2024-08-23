@@ -1,7 +1,6 @@
 package me.xiaojibazhanshi.customhoe.guis.hoeitemgui;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
-import dev.triumphteam.gui.components.GuiType;
 import dev.triumphteam.gui.guis.Gui;
 import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerData;
@@ -59,7 +58,6 @@ public class HoeItemGui {
             player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1.0F, 1.0F);
         }
     }
-
 
 
 }

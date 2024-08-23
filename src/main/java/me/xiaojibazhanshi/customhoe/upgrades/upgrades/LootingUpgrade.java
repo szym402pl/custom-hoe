@@ -4,9 +4,6 @@ import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -20,9 +17,10 @@ public class LootingUpgrade extends Upgrade {
     public LootingUpgrade(List<Level> levels) {
         super("Looting", levels);
     }
+
     @Override
     public List<String> getDescription() {
-        return List.of("", color("&7This upgrade will give"), color("&7you more crop per harvest."));
+        return List.of("", color("&7This upgrade will give you"), color("&7more crop per harvest."));
     }
 
     @Override

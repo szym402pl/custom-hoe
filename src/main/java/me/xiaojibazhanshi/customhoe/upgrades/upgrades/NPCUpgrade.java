@@ -20,8 +20,8 @@ public class NPCUpgrade extends Upgrade {
     @Override
     public List<String> getDescription() {
         return List.of("", color("&7This upgrade will spawn a NPC, that"),
-                           color("&7harvests one of broken crop a second."),
-                           color("&7Make sure to approach him when he's finished!"));
+                color("&7harvests one of broken crop a second."),
+                color("&7Make sure to approach him when he's finished!"));
     }
 
     @Override

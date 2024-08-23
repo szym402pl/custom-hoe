@@ -47,8 +47,8 @@ public class Util {
             Map<String, Object> extraValueMap = extraValueId == null
                     ? null
                     : Map.of(extraValueId, nullCheckCI(config,
-                            currentPath + level + "." + extraValueId,
-                            Integer.class));
+                    currentPath + level + "." + extraValueId,
+                    Integer.class));
 
             list.add(new Level(levelInt, chance, cost, extraValueMap));
         }

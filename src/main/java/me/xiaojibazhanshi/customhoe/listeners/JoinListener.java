@@ -23,6 +23,8 @@ public class JoinListener implements Listener {
         if (!CommonUtil.containsHoe(player.getInventory())) {
             HoeItemGui gui = new HoeItemGui(playerDataManager);
             gui.openGui(player);
+        } else {
+            CommonUtil.updateHoe(player.getInventory(), player, playerDataManager.getPlayerData(player));
         }
 
     }

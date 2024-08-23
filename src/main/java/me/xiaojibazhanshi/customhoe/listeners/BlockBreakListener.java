@@ -13,8 +13,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
-
 public class BlockBreakListener implements Listener {
 
     UpgradeManager upgradeManager;

@@ -42,7 +42,8 @@ public class PlayerDataManager {
             return;
         }
         try (FileReader reader = new FileReader(dataFile)) {
-            Type type = new TypeToken<Map<UUID, Map<String, Integer>>>() {}.getType();
+            Type type = new TypeToken<Map<UUID, Map<String, Integer>>>() {
+            }.getType();
             Map<UUID, Map<String, Integer>> rawData = gson.fromJson(reader, type);
             playerDataMap = new HashMap<>();
 

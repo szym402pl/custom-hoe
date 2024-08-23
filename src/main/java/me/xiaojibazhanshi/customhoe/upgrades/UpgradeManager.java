@@ -8,20 +8,26 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Getter
 public class UpgradeManager {
 
-    private final AutoReplantUpgrade autoReplantUpgrade;
-    private final LootingUpgrade lootingUpgrade;
-    private final MeteorUpgrade meteorUpgrade;
-    private final NPCUpgrade npcUpgrade;
-    private final SpeedUpgrade speedUpgrade;
+    private final ConfigManager configManager;
+
+    private AutoReplantUpgrade autoReplantUpgrade;
+    private LootingUpgrade lootingUpgrade;
+    private MeteorUpgrade meteorUpgrade;
+    private NPCUpgrade npcUpgrade;
+    private SpeedUpgrade speedUpgrade;
 
     private final Map<String, Upgrade> upgradeRegistry = new HashMap<>();
 
     public UpgradeManager(ConfigManager configManager) {
+        this.configManager = configManager;
+        initializeUpgrades();
+    }
+
+    private void initializeUpgrades() {
         this.autoReplantUpgrade = new AutoReplantUpgrade(configManager.getAutoReplantLevels());
         this.lootingUpgrade = new LootingUpgrade(configManager.getLootingLevels());
         this.meteorUpgrade = new MeteorUpgrade(configManager.getMeteorLevels());
@@ -33,6 +39,10 @@ public class UpgradeManager {
         registerUpgrade(meteorUpgrade);
         registerUpgrade(npcUpgrade);
         registerUpgrade(speedUpgrade);
+    }
+
+    public void reload() {
+        initializeUpgrades();
     }
 
     public List<Upgrade> getAllUpgrades() {

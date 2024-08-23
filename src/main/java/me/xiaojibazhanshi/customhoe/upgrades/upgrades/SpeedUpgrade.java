@@ -18,9 +18,10 @@ public class SpeedUpgrade extends Upgrade {
     public SpeedUpgrade(List<Level> levels) {
         super("Speed", levels);
     }
+
     @Override
     public List<String> getDescription() {
-        return List.of("", color("&7This upgrade will give"), color("&7you a temporary speed boost."));
+        return List.of("", color("&7This upgrade will give you"), color("&7a temporary speed boost."));
     }
 
     @Override
