@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -94,30 +95,30 @@ public class CommonUtil {
     }
 
     public static void replantCrop(Block block, Material material, int age) {
-        Material replantMaterial;
-        switch (material) {
-            case WHEAT:
-                replantMaterial = Material.WHEAT;
-                break;
-            case CARROTS:
-                replantMaterial = Material.CARROTS;
-                break;
-            case POTATOES:
-                replantMaterial = Material.POTATOES;
-                break;
-            case BEETROOTS:
-                replantMaterial = Material.BEETROOTS;
-                break;
-            default:
-                return;
+        if (block == null || material == null || age < 0) {
+            return;
         }
 
-        block.setType(replantMaterial);
-        Ageable ageable = (Ageable) block.getBlockData();
-        ageable.setAge(age);
+        block.setType(material);
+
+        switch (material) {
+            case WHEAT:
+            case CARROTS:
+            case POTATOES:
+                BlockData blockData = material.createBlockData();
+
+                if (blockData instanceof Ageable ageable) {
+                    ageable.setAge(age);
+                    block.setBlockData(ageable);
+                }
+            default:
+                break;
+        }
+
+        block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(material));
     }
 
-    public static void replantCropsInRadiusAround(Block start, int radius) {
+    public static void breakCropsInRadiusAround(Block start, int radius) {
         if (radius < 0) return;
 
         int startY = start.getY();
@@ -125,7 +126,7 @@ public class CommonUtil {
         for (int x = -radius; x <= radius; x++) {
             for (int z = -radius; z <= radius; z++) {
                 Block targetBlock = start.getRelative(x, startY, z);
-                replantCrop(targetBlock, targetBlock.getType(), 1);
+                targetBlock.breakNaturally();
             }
         }
     }

@@ -28,13 +28,16 @@ public class AutoReplantUpgrade extends Upgrade {
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
+        if (levelInt <= 0) return; // no upgrade, don't do anything
+
         Level level = this.getLevel(levelInt);
 
         double chance = level.chanceToTrigger();
         if (CommonUtil.isLuckNotOnYourSide(chance)) return;
+
         Block block = event.getBlock();
 
-        CommonUtil.replantCrop(block, block.getType(), 7);
+        CommonUtil.replantCrop(block, block.getType(), 1);
         player.sendTitle("", "AutoReplant upgrade triggered", 10, 15, 5);
     }
 }

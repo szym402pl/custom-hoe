@@ -27,6 +27,8 @@ public class NPCUpgrade extends Upgrade {
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
+        if (levelInt <= 0) return; // no upgrade, don't do anything
+
         Level level = this.getLevel(levelInt);
 
         double chance = level.chanceToTrigger();

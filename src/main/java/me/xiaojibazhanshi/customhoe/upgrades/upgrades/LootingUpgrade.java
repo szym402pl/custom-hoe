@@ -4,6 +4,9 @@ import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +28,8 @@ public class LootingUpgrade extends Upgrade {
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
+        if (levelInt <= 0) return; // no upgrade, don't do anything
+
         Level level = this.getLevel(levelInt);
         int cropMultiplier = level.getExtraValue("crop-multiplier", int.class);
 
@@ -33,11 +38,9 @@ public class LootingUpgrade extends Upgrade {
 
         List<ItemStack> drops = (List<ItemStack>) event.getBlock().getDrops();
 
-        drops.forEach(drop -> {
-            for (int i = 1; i < cropMultiplier; i++) {
-                event.getBlock().getDrops().add(drop);
-            }
-        });
+        for (ItemStack drop : drops) {
+
+        }
 
         player.sendTitle("", "Looting upgrade triggered", 10, 15, 5);
     }

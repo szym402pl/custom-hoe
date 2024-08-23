@@ -24,13 +24,15 @@ public class MeteorUpgrade extends Upgrade {
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
+        if (levelInt <= 0) return; // no upgrade, don't do anything
+
         Level level = this.getLevel(levelInt);
 
         double chance = level.chanceToTrigger();
         int radius = level.getExtraValue("radius", int.class);
         if (CommonUtil.isLuckNotOnYourSide(chance)) return;
 
-        CommonUtil.replantCropsInRadiusAround(event.getBlock(), radius);
+        CommonUtil.breakCropsInRadiusAround(event.getBlock(), radius);
         player.sendTitle("", "Meteor upgrade triggered", 10, 15, 5);
     }
 }
