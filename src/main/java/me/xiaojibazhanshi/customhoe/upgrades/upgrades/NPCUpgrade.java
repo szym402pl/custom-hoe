@@ -38,7 +38,7 @@ public class NPCUpgrade extends Upgrade {
         int npcLifetimeSeconds = level.getExtraValue("npc-lifetime-seconds", Integer.class);
 
         NPCManager npcManager = new NPCManager();
-        npcManager.createHarvestNPC(player, npcLifetimeSeconds);
+        npcManager.createHarvestNPC(player, event.getBlock().getType(), npcLifetimeSeconds);
 
         player.sendTitle("", "Npc upgrade triggered", 10, 15, 5);
     }

@@ -6,6 +6,7 @@
 # If you leave him hanging or leave the server during that time, you lose those rewards (he despawns after 5 min)
 
 upgrades:
+  notification-on-trigger: true # set to false if the upgrades are meant to be triggered a ton
   player-speed:
     levels:
       1:

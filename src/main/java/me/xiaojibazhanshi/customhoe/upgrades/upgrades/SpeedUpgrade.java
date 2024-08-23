@@ -24,6 +24,8 @@ public class SpeedUpgrade extends Upgrade {
         return List.of("", color("&7This upgrade will give you"), color("&7a temporary speed boost."));
     }
 
+
+
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);

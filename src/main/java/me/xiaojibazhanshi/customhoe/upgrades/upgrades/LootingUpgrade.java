@@ -23,6 +23,8 @@ public class LootingUpgrade extends Upgrade {
         return List.of("", color("&7This upgrade will give you"), color("&7more crop per harvest."));
     }
 
+
+
     @Override
     public void onCropBreak(BlockBreakEvent event, Player player, PlayerDataManager playerDataManager) {
         int levelInt = playerDataManager.getPlayerUpgradeLevel(player, this);
@@ -43,7 +45,5 @@ public class LootingUpgrade extends Upgrade {
                 event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), drop);
             }
         }
-
-        player.sendTitle("", "Looting upgrade triggered", 10, 15, 5);
     }
 }

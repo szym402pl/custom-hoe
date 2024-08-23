@@ -28,6 +28,8 @@ public class ConfigManager extends Util {
     private List<Level> meteorLevels;
     private List<Level> npcLevels;
 
+    private boolean notifyOnTrigger;
+
     public ConfigManager(CustomHoe instance) {
         config = instance.getConfig();
 
@@ -56,6 +58,8 @@ public class ConfigManager extends Util {
         this.autoReplantLevels = getUpgradeLevels(config, "auto-replant", null);
         this.meteorLevels = getUpgradeLevels(config, "meteor", "radius");
         this.npcLevels = getUpgradeLevels(config, "npc", "npc-lifetime-seconds");
+
+        this.notifyOnTrigger = nullCheckCI(config, "upgrades.notify-on-trigger", Boolean.class);
     }
 
     public void reload(CustomHoe instance) {
