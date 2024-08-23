@@ -69,7 +69,7 @@ public class PlayerDataManager {
 
     public int getPlayerUpgradeLevel(Player player, Upgrade upgrade) {
         PlayerData playerData = getPlayerData(player);
-        return playerData.upgradeLevels().getOrDefault(upgrade, 1);
+        return playerData.upgradeLevels().getOrDefault(upgrade, 0);
     }
 
     public void saveAllData() {

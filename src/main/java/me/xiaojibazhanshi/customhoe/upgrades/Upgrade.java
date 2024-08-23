@@ -20,7 +20,7 @@ public abstract class Upgrade {
     private final String name;
 
     public String getColoredName() {
-        return CommonUtil.color("&7" + getName());
+        return CommonUtil.color("&a" + getName());
     }
     public Level getLevel(int level) {
         return getLevels().get(level - 1);

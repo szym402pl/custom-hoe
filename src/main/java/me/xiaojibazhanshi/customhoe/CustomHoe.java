@@ -20,6 +20,8 @@ public final class CustomHoe extends JavaPlugin {
     private PlayerDataManager playerDataManager;
     private UpgradeManager upgradeManager;
 
+    //TODO: Further main gui implementation (upgrade guis), stop player from dropping the hoe (THE TOOL), add vault
+
     @Override
     public void onEnable() {
         main = this;
