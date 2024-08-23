@@ -55,8 +55,8 @@ public class MainGui {
             event.setCancelled(true);
             player.closeInventory();
 
-            //UpgradeGui upgradeGui = new UpgradeGui();
-            //upgradeGui.openGui(player);
+            UpgradeGui upgradeGui = new UpgradeGui(configManager, playerDataManager);
+            upgradeGui.openGui(player, upgradeManager.getAutoReplantUpgrade());
         }));
 
         gui.setItem(2,4, ItemBuilder.from(createUpgradeItemStack(
@@ -67,8 +67,8 @@ public class MainGui {
             event.setCancelled(true);
             player.closeInventory();
 
-            //UpgradeGui upgradeGui = new UpgradeGui();
-            //upgradeGui.openGui(player);
+            UpgradeGui upgradeGui = new UpgradeGui(configManager, playerDataManager);
+            upgradeGui.openGui(player, upgradeManager.getLootingUpgrade());
         }));
 
         gui.setItem(2,5, ItemBuilder.from(createUpgradeItemStack(
@@ -79,8 +79,8 @@ public class MainGui {
             event.setCancelled(true);
             player.closeInventory();
 
-            //UpgradeGui upgradeGui = new UpgradeGui();
-            //upgradeGui.openGui(player);
+            UpgradeGui upgradeGui = new UpgradeGui(configManager, playerDataManager);
+            upgradeGui.openGui(player, upgradeManager.getMeteorUpgrade());
         }));
 
         gui.setItem(2,6, ItemBuilder.from(createUpgradeItemStack(
@@ -91,8 +91,8 @@ public class MainGui {
             event.setCancelled(true);
             player.closeInventory();
 
-            //UpgradeGui upgradeGui = new UpgradeGui();
-            //upgradeGui.openGui(player);
+            UpgradeGui upgradeGui = new UpgradeGui(configManager, playerDataManager);
+            upgradeGui.openGui(player, upgradeManager.getNpcUpgrade());
         }));
 
         gui.setItem(2,7, ItemBuilder.from(createUpgradeItemStack(
@@ -103,8 +103,8 @@ public class MainGui {
             event.setCancelled(true);
             player.closeInventory();
 
-            //UpgradeGui upgradeGui = new UpgradeGui();
-            //upgradeGui.openGui(player);
+            UpgradeGui upgradeGui = new UpgradeGui(configManager, playerDataManager);
+            upgradeGui.openGui(player, upgradeManager.getSpeedUpgrade());
         }));
 
         if (fill) {

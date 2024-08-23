@@ -9,7 +9,9 @@ import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
 import me.xiaojibazhanshi.customhoe.upgrades.upgrades.AutoReplantUpgrade;
 import net.kyori.adventure.text.Component;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -24,12 +26,10 @@ import static me.xiaojibazhanshi.customhoe.common.CommonUtil.makeItem;
 public class UpgradeGui {
 
     private final ConfigManager configManager;
-    private final UpgradeManager upgradeManager;
     private final PlayerDataManager playerDataManager;
 
-    public UpgradeGui(ConfigManager configManager, UpgradeManager upgradeManager, PlayerDataManager playerDataManager) {
+    public UpgradeGui(ConfigManager configManager, PlayerDataManager playerDataManager) {
         this.playerDataManager = playerDataManager;
-        this.upgradeManager = upgradeManager;
         this.configManager = configManager;
     }
 
@@ -50,21 +50,59 @@ public class UpgradeGui {
         Map<ItemStack, Level> itemLevelMap = new HashMap<>();
 
         for (Level level : levels) {
-            String name = color("");
+            String name = color("&aLevel " + level.level());
+            int extraValue = getExtraValue(upgrade, level);
+            boolean canBeBought = currentLevel >= level.level(); // && vaultCheck AAAAAAAAAAA
 
-            List<String> lore = new ArrayList<>(List.of(
-                    color("a"),
-                    color("b"),
-                    color("c")
+            List<String> lore = new ArrayList<>(List.of("",
+                    color("&7Chance to trigger: " + level.chanceToTrigger()),
+                    color("&7Cost:" + level.cost()),
+                    extraValue >= 0 ? color("&7" + extraValueName + ": ") + extraValue : "", "",
+                    canBeBought ? color("&cYou cannot buy this upgrade") : color("&aYou can buy this upgrade.")
             ));
 
+            ItemStack item = makeItem(name, Material.EXPERIENCE_BOTTLE, lore);
+            item.setAmount(level.level());
 
+            if (currentLevel == level.level()) {
+                assert item.getItemMeta() != null;
+                item.getItemMeta().setEnchantmentGlintOverride(true);
+            }
+
+            itemLevelMap.put(item, level);
+        }
+
+        for (ItemStack item : itemLevelMap.keySet()) {
+            gui.addItem(ItemBuilder.from(item).asGuiItem(event -> {
+                event.setCancelled(true);
+                player.closeInventory();
+                Level level = itemLevelMap.get(item);
+
+                if (currentLevel >= level.level()) {
+                    player.sendMessage(ChatColor.RED + "Your level of this upgrade is already the same or higher!");
+                    player.playSound(player, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F);
+                    return;
+                }
+
+                assert item.getItemMeta() != null && item.getItemMeta().getLore() != null;
+                boolean vaultCheck = item.getItemMeta().getLore().contains("You can buy this upgrade");
+
+                if (vaultCheck) {
+                    player.sendMessage(ChatColor.RED + "You don't have enough money to buy this upgrade!");
+                    player.playSound(player, Sound.ENTITY_VILLAGER_NO, 1.0F, 1.0F);
+                    return;
+                }
+
+                playerDataManager.setPlayerUpgradeLevel(player, upgrade, level.level());
+                player.sendMessage(color("&aSuccessfully bought the upgrade!"));
+                player.playSound(player, Sound.ENTITY_VILLAGER_CELEBRATE, 1.0F, 1.0F);
+            }));
         }
 
         if (hideFarLevels) {
             for (int i = currentLevel + 2; i < levels.size() -1; i++) {
                 gui.setItem(i, ItemBuilder
-                        .from(makeItem("&cYou can't view this upgrade yet!", Material.BARRIER, null))
+                        .from(makeItem("&cYou can't view this level's details yet!", Material.BARRIER, null))
                         .asGuiItem(event -> event.setCancelled(true)));
             }
         }
@@ -94,6 +132,26 @@ public class UpgradeGui {
             }
             default -> {
                 return null;
+            }
+        }
+    }
+
+    private int getExtraValue(Upgrade upgrade, Level level) {
+        switch(upgrade.getName().toLowerCase()) {
+            case "speed" -> {
+                return level.getExtraValue("potion-amplifier", Integer.class);
+            }
+            case "looting" -> {
+                return level.getExtraValue("crop-multiplier", Integer.class);
+            }
+            case "meteor" -> {
+                return level.getExtraValue("radius", Integer.class);
+            }
+            case "npc" -> {
+                return level.getExtraValue("npc-lifetime-seconds", Integer.class);
+            }
+            default -> {
+                return -1;
             }
         }
     }

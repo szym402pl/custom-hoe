@@ -1,9 +1,11 @@
 package me.xiaojibazhanshi.customhoe.data.playerdata;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import me.xiaojibazhanshi.customhoe.upgrades.UpgradeManager;
+import me.xiaojibazhanshi.customhoe.upgrades.UpgradeTypeAdapter;
 import org.bukkit.entity.Player;
 
 import java.io.File;
@@ -19,13 +21,19 @@ public class PlayerDataManager {
 
     private final UpgradeManager upgradeManager;
     private final File dataFile;
-    private final Gson gson = new Gson();
+    private final Gson gson;
     private Map<UUID, PlayerData> playerDataMap;
 
     public PlayerDataManager(File dataFolder, UpgradeManager upgradeManager) {
         this.upgradeManager = upgradeManager;
         this.dataFile = new File(dataFolder, "playerdata.json");
         this.playerDataMap = new HashMap<>();
+
+        // Configure Gson with a custom TypeAdapter for Upgrade
+        this.gson = new GsonBuilder()
+                .registerTypeAdapter(Upgrade.class, new UpgradeTypeAdapter())
+                .create();
+
         loadPlayerData();
     }
 
@@ -34,11 +42,24 @@ public class PlayerDataManager {
             return;
         }
         try (FileReader reader = new FileReader(dataFile)) {
-            Type type = new TypeToken<Map<UUID, PlayerData>>() {
-            }.getType();
-            playerDataMap = gson.fromJson(reader, type);
-            if (playerDataMap == null) {
-                playerDataMap = new HashMap<>();
+            Type type = new TypeToken<Map<UUID, Map<String, Integer>>>() {}.getType();
+            Map<UUID, Map<String, Integer>> rawData = gson.fromJson(reader, type);
+            playerDataMap = new HashMap<>();
+            if (rawData != null) {
+                for (Map.Entry<UUID, Map<String, Integer>> entry : rawData.entrySet()) {
+                    UUID uuid = entry.getKey();
+                    Map<String, Integer> upgradeLevels = entry.getValue();
+                    Map<Upgrade, Integer> upgradeMap = new HashMap<>();
+                    for (Map.Entry<String, Integer> levelEntry : upgradeLevels.entrySet()) {
+                        String upgradeKey = levelEntry.getKey();
+                        int level = levelEntry.getValue();
+                        Upgrade upgrade = upgradeManager.getUpgradeFromKey(upgradeKey);
+                        if (upgrade != null) {
+                            upgradeMap.put(upgrade, level);
+                        }
+                    }
+                    playerDataMap.put(uuid, new PlayerData(uuid, upgradeMap));
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,7 +68,19 @@ public class PlayerDataManager {
 
     private void savePlayerData() {
         try (FileWriter writer = new FileWriter(dataFile)) {
-            gson.toJson(playerDataMap, writer);
+            Map<UUID, Map<String, Integer>> rawData = new HashMap<>();
+            for (Map.Entry<UUID, PlayerData> entry : playerDataMap.entrySet()) {
+                UUID uuid = entry.getKey();
+                PlayerData playerData = entry.getValue();
+                Map<String, Integer> upgradeLevels = new HashMap<>();
+                for (Map.Entry<Upgrade, Integer> upgradeEntry : playerData.upgradeLevels().entrySet()) {
+                    String upgradeKey = upgradeManager.getUpgradeKey(upgradeEntry.getKey());
+                    int level = upgradeEntry.getValue();
+                    upgradeLevels.put(upgradeKey, level);
+                }
+                rawData.put(uuid, upgradeLevels);
+            }
+            gson.toJson(rawData, writer);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,8 +88,8 @@ public class PlayerDataManager {
 
     public PlayerData getPlayerData(Player player) {
         return playerDataMap.computeIfAbsent(player.getUniqueId(), uuid -> {
+            // Initialize with empty upgrade levels
             Map<Upgrade, Integer> upgradeLevels = new HashMap<>();
-
             return new PlayerData(uuid, upgradeLevels);
         });
     }
