@@ -4,5 +4,6 @@ main: me.xiaojibazhanshi.customhoe.CustomHoe
 api-version: '1.21'
 authors: [ XiaoJibaZhanshi ]
 description: A custom hoe plugin (the tool ofc)
+depend: [Citizens, Vault]
 commands:
   hoetool:

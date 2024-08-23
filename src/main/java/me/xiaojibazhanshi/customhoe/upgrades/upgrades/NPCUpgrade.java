@@ -2,6 +2,7 @@ package me.xiaojibazhanshi.customhoe.upgrades.upgrades;
 
 import me.xiaojibazhanshi.customhoe.common.CommonUtil;
 import me.xiaojibazhanshi.customhoe.data.playerdata.PlayerDataManager;
+import me.xiaojibazhanshi.customhoe.npc.NPCManager;
 import me.xiaojibazhanshi.customhoe.upgrades.Level;
 import me.xiaojibazhanshi.customhoe.upgrades.Upgrade;
 import org.bukkit.entity.Player;
@@ -33,6 +34,11 @@ public class NPCUpgrade extends Upgrade {
 
         double chance = level.chanceToTrigger();
         if (CommonUtil.isLuckNotOnYourSide(chance)) return;
+
+        int npcLifetimeSeconds = level.getExtraValue("npc-lifetime-seconds", Integer.class);
+
+        NPCManager npcManager = new NPCManager();
+        npcManager.createHarvestNPC(player, npcLifetimeSeconds);
 
         player.sendTitle("", "Npc upgrade triggered", 10, 15, 5);
     }

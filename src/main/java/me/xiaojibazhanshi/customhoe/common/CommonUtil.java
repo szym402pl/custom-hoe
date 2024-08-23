@@ -82,6 +82,17 @@ public class CommonUtil {
         return customHoe;
     }
 
+    public static void handleItemAddition(Player player, ItemStack item) {
+        Inventory inventory = player.getInventory();
+
+        if (inventory.firstEmpty() == -1) {
+            player.sendMessage(color("&7Inventory full, dropping items..."));
+            player.getWorld().dropItemNaturally(player.getLocation(), item);
+        } else {
+            inventory.addItem(item);
+        }
+    }
+
     public static boolean isCustomHoe(ItemStack item) {
         return item != null
                 && item.getType().equals(Material.DIAMOND_HOE)
