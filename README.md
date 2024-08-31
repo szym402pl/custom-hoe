@@ -2,3 +2,5 @@ Hi! If you want to use the plugin, you have to drag and drop the downloaded JAR 
 Dependencies: VAULT, CITIZENS, ESSENTIALSX
 
 Resource link: [link](https://hangar.papermc.io/szym402pl/customhoetool)
+
+https://prnt.sc/fBitf8f-fk7W (preview)
