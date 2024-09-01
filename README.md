@@ -3,5 +3,4 @@ Dependencies: VAULT, CITIZENS, ESSENTIALSX
 This plugin allows you to have your own custom hoe tool that can be upgraded. The upgrades can make you replant crops automatically, break nearby crops in some radius instantly, etc.
 
 Resource link: [link](https://hangar.papermc.io/szym402pl/customhoetool)
-
-https://prnt.sc/fBitf8f-fk7W (preview)
+preview: ![](hoe.png)
